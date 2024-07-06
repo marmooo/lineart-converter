@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple app to convert images into line drawings.">
+    <title>Lineart Converter</title>
+    <meta property="og:title" content="Lineart Converter">
+    <meta property="og:site_name" content="Lineart Converter">
+    <meta property="og:description" content="A simple app to convert images into line drawings.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://marmooo.github.io/lineart-converter/">
+    <meta property="og:image" content="https://marmooo.github.io/lineart-converter/favicon/apple-touch-icon.png">
+    <meta name="twitter:card" content="summary">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F2179JXDYY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-F2179JXDYY');
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/lineart-converter/sw.js');
+        });
+      }
+    </script>
+    <link rel="icon" type="image/png" href="/lineart-converter/favicon/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/lineart-converter/favicon/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/lineart-converter/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/lineart-converter/favicon/site.webmanifest">
+    <link rel="alternate" href="https://marmooo.github.io/lineart-converter/" hreflang="x-default">
+    <link rel="alternate" href="https://marmooo.github.io/lineart-converter/ja/" hreflang="ja">
+    <link rel="alternate" href="https://marmooo.github.io/lineart-converter/en/" hreflang="en">
+    <link class="drop-inline-css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link class="inline-css" href="https://cdn.jsdelivr.net/npm/image-compare-viewer@1.6.2/dist/image-compare-viewer.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+      .panelContainer { display:flex; flex-direction:column; }
+      .canvasContainer { width:100%; height:calc(100vh - 110px); }
+      .toolbar { display:flex; flex-direction:row; justify-content:space-between; }
+      .center { display:flex; flex-direction:row; justify-content:center; align-items:center; }
+      @media (orientation: landscape) {
+        .panelContainer { flex-direction:row; }
+        .canvasContainer { width:calc(100% - 60px); height:calc(100vh - 90px); }
+        .toolbar { width:60px; flex-direction:column; }
+        .center { flex-direction:column; }
+      }
+      .filterLabel { width: 110px; }
+      .filterNav { position:absolute; left:0; top:0; }
+      html[data-bs-theme="dark"] .favicon { filter: invert(1) hue-rotate(180deg); }
+    </style>
+    <script data-ad-client="ca-pub-6459713332128733" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand">
+        <div class="container-xl flex-wrap">
+          <a class="navbar-brand" href="/lineart-converter/">
+            <img class="favicon" alt="" src="/lineart-converter/favicon/favicon.svg" width="32" height="32">
+            Lineart Converter
+          </a>
+          <div class="navbar-nav">
+            <select title="lang" id="lang" class="form-select form-select-sm">
+              <option value="en" selected>English</option>
+              <option value="ja">日本語</option>
+            </select>
+            <button title="toggle dark-mode" id="toggleDarkMode" class="fs-4 btn p-0 ms-1" type="button">🌓</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container-xxl">
+      <noscript>
+        <div class="alert alert-warning">Please enable JavaScript.</div>
+      </noscript>
+      <div>
+        <div id="loadPanel">
+          <h1 class="text-center">Convert images to line arts for free.</h1>
+          <div class="row">
+            <div class="col-md-7 pb-3">
+              <div class="image-compare rounded">
+                <img src="/lineart-converter/img/before.webp" width="600" height="600" class="img-fluid rounded" alt="before" decoding="async">
+                <img src="/lineart-converter/img/after.webp" width="600" height="600" class="img-fluid rounded d-none" alt="after" decoding="async">
+              </div>
+            </div>
+            <div class="col-md-5 d-flex flex-column-reverse">
+              <div class="alert alert-info">
+                <dl>
+                  <dt class="fs-5">⚡️ Blazing fast</dt>
+                  <dd>Processed with Wasm + SIMD + Threads.</dd>
+                  <dt class="fs-5">🔒 Secure</dt>
+                  <dd>No data is sent to the server.</dd>
+                  <dt class="fs-5">🤖 No Learning</dt>
+                  <dd>Your personal data is not learned.</dd>
+                  <dt class="fs-5">⛔ Rights free</dt>
+                  <dd>No AI, using a simple algorithm.</dd>
+                </dl>
+              </div>
+              <div class="alert alert-light shadow text-center">
+                <div>
+                  <button class="selectImage btn btn-lg btn-primary rounded-pill">Select Image</button>
+                  <input class="inputImage" type="file" accept="image/*" hidden>
+                </div>
+                or drop a file.
+                <div class="pt-3">No image? Try one of these:
+                </div>
+                <div class="examples">
+                  <button class="btn p-0">
+                    <img class="rounded" src="/lineart-converter/img/anime-64.webp" width="64" height="64" alt="an example of anime drawings" loading="lazy">
+                  </button>
+                  <button class="btn p-0">
+                    <img class="rounded" src="/lineart-converter/img/car-64.webp" width="64" height="64" alt="an example of products" loading="lazy">
+                  </button>
+                  <button class="btn p-0">
+                    <img class="rounded" src="/lineart-converter/img/cat-64.webp" width="64" height="64" alt="an example of animals" loading="lazy">
+                  </button>
+                  <button class="btn p-0">
+                    <img class="rounded" src="/lineart-converter/img/castle-64.webp" width="64" height="64" alt="an example of buildings" loading="lazy">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="filterPanel" class="user-select-none d-none">
+          <div class="panelContainer">
+            <div class="canvasContainer d-flex align-items-center justify-content-center bg-dark-subtle">
+              <div class="position-relative w-100 h-100">
+                <canvas class="w-100 h-100 object-fit-contain"></canvas>
+                <div class="filterNav bg-dark-subtle opacity-75 p-2">
+                  <div class="form-group d-flex align-items-center">
+                    <div class="filterLabel col-form-label">Filter</div>
+                    <div class="d-flex">
+                      <select class="filterSelect form-select form-selecct-sm w-auto">
+                        <option value="adaptiveThreshold">adaptiveThreshold</option>
+                        <option value="dilateThreshold">dilateThreshold</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="adaptiveThreshold">
+                    <div class="form-group d-flex align-items-center">
+                      <div class="filterLabel col-form-label">Block size</div>
+                      <div class="d-flex w-100">
+                        <input type="range" class="blockSize form-range" min="0" max="100" step="1" value="0" data-value="10">
+                        <button title="reset" class="btn p-0" type="button">↩️</button>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                      <div class="filterLabel col-form-label">C</div>
+                      <div class="d-flex w-100">
+                        <input type="range" class="C form-range" min="0" max="100" step="1" value="10" data-value="10">
+                        <button title="reset" class="btn p-0" type="button">↩️</button>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                      <div class="filterLabel col-form-label">Dilate</div>
+                      <div class="d-flex w-100">
+                        <input type="range" class="dilateIterations form-range" min="0" max="10" step="1" value="0" data-value="0">
+                        <button title="reset" class="btn p-0" type="button">↩️</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dilateThreshold d-none">
+                    <div class="form-group d-flex align-items-center">
+                      <div class="filterLabel col-form-label">Threshold</div>
+                      <div class="d-flex w-100">
+                        <input type="range" class="threshold form-range" min="0" max="255" step="1" value="220" data-value="220">
+                        <button title="reset" class="btn p-0" type="button">↩️</button>
+                      </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                      <div class="filterLabel col-form-label">Dilate</div>
+                      <div class="d-flex w-100">
+                        <input type="range" class="dilateIterations form-range" min="0" max="10" step="1" value="1" data-value="1">
+                        <button title="reset" class="btn p-0" type="button">↩️</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar text-center row align-items-center m-0">
+              <div class="col p-0 center">
+                <button title="move top" class="moveTop btn p-0" type="button" data-bs-toggle="tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M0 0h24v24H0z" fill="none"/><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="col p-0 center">
+                <button title="download" class="download btn p-0" type="button" data-bs-toggle="tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M17 12v5H3v-5H1v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="M10 15l5-6h-4V1H9v8H5l5 6z"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="col p-0 center">
+                <button title="load from clipboard" class="clipboard btn p-0" type="button" data-bs-toggle="tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 14 16" fill="currentColor">
+                    <path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path>
+                  </svg>
+                </button>
+                <button title="select image" class="selectImage btn p-0 m-2" type="button" data-bs-toggle="tooltip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M17 12v5H3v-5H1v5a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5z"/><path d="M15 7l-5-6-5 6h4v8h2V7h4z"/>
+                  </svg>
+                </button>
+                <input class="inputImage" type="file" accept="image/*" hidden>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="pt-4 alert text-center">
+      <div>
+        <a class="px-1" href="/">Home</a>
+        <a class="px-1" href="/terms/">Terms</a>
+        <a class="px-1" href="https://github.com/marmooo/lineart-converter">Contact</a>
+      </div>
+      <div class="text-muted">&copy; <a href="https://github.com/marmooo">marmooo</a></div>
+    </footer>
+    <div class="drop-inline-css
+      tooltip tooltip-arrow tooltip-inner bs-tooltip-auto fade show
+      bs-tooltip-top bs-tooltip-end bs-tooltip-bottom bs-tooltip-start
+      d-none">
+      <div data-popper-placement="left"></div>
+      <div data-popper-placement="top"></div>
+      <div data-popper-placement="right"></div>
+      <div data-popper-placement="bottom"></div>
+    </div>
+    <script src="/lineart-converter/coi-serviceworker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.6.1/dist/umd/index.min.js"></script>
+    <script type="module" src="/lineart-converter/index.js"></script>
+  </body>
+</html>
