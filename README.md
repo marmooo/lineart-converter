@@ -1,4 +1,4 @@
-# Photo Scanner
+# Lineart Converter
 
 [A simple app to convert images into line drawings](https://marmooo.github.io/lineart-converter/).
 
