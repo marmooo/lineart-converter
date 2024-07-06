@@ -40,19 +40,18 @@ function initTooltip() {
 }
 
 async function getOpenCVPath() {
-  // const simdSupport = await wasmFeatureDetect.simd();
-  // const threadsSupport = self.crossOriginIsolated &&
-  //   await wasmFeatureDetect.threads();
-  // if (simdSupport && threadsSupport) {
-  //   return "/lineart-converter/opencv/threaded-simd/opencv_js.js";
-  // } else if (simdSupport) {
-  //   return "/lineart-converter/opencv/simd/opencv_js.js";
-  // } else if (threadsSupport) {
-  //   return "/lineart-converter/opencv/threads/opencv_js.js";
-  // } else {
-  //   return "/lineart-converter/opencv/wasm/opencv_js.js";
-  // }
-  return "/lineart-converter/opencv/wasm/opencv_js.js";
+  const simdSupport = await wasmFeatureDetect.simd();
+  const threadsSupport = self.crossOriginIsolated &&
+    await wasmFeatureDetect.threads();
+  if (simdSupport && threadsSupport) {
+    return "/lineart-converter/opencv/threaded-simd/opencv_js.js";
+  } else if (simdSupport) {
+    return "/lineart-converter/opencv/simd/opencv_js.js";
+  } else if (threadsSupport) {
+    return "/lineart-converter/opencv/threads/opencv_js.js";
+  } else {
+    return "/lineart-converter/opencv/wasm/opencv_js.js";
+  }
 }
 
 function loadScript(url) {
