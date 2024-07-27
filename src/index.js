@@ -265,14 +265,13 @@ class FilterPanel extends LoadPanel {
 
   addInputEvents(filter) {
     for (const input of Object.values(filter.inputs)) {
-      input.oninput = () => filter.apply();
-      input.onchange = () => filter.apply();
+      input.addEventListener("input", () => filter.apply());
     }
     for (const node of filter.root.querySelectorAll("button[title=reset]")) {
       node.onclick = () => {
         const rangeInput = node.previousElementSibling;
         rangeInput.value = rangeInput.dataset.value;
-        filter.apply();
+        rangeInput.dispatchEvent(new Event("input"));
       };
     }
   }
