@@ -357,6 +357,7 @@ class FilterPanel extends LoadPanel {
       }
       cv.imshow(this.canvas, src);
       src.delete();
+      // this.transparentBackground();
     }
   }
 
@@ -397,8 +398,19 @@ class FilterPanel extends LoadPanel {
       }
       cv.imshow(this.canvas, src);
       src.delete();
+      // this.transparentBackground();
     }
   }
+
+  // transparentBackground() {
+  //   const { width, height } = this.canvas;
+  //   const imageData = this.canvasContext.getImageData(0, 0, width, height);
+  //   const data = imageData.data;
+  //   for (let i = 0; i < data.length; i+= 4) {
+  //     if (data[i] === 255) data[i + 3] = 0;
+  //   }
+  //   this.canvasContext.putImageData(imageData, 0, 0);
+  // }
 
   setCanvas(canvas) {
     if (canvas.tagName.toLowerCase() === "img") {
