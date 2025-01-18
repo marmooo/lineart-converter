@@ -1,6 +1,6 @@
 base_dir=${HOME}/workspace
-emsdk_dir=${base_dir}/emsdk  # 3.1.61
-opencv_dir=${base_dir}/opencv  # 4.10.0
+emsdk_dir=${base_dir}/emsdk  # 3.1.74
+opencv_dir=${base_dir}/opencv  # 4.11.0
 build_py=${opencv_dir}/platforms/js/build_js.py
 build_dir=${opencv_dir}/build_wasm
 options="\
