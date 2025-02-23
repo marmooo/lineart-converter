@@ -1,4 +1,4 @@
-const CACHE_NAME = "2025-01-18 19:00";
+const CACHE_NAME = "2025-02-23 20:00";
 const urlsToCache = [
   "/lineart-converter/",
   "/lineart-converter/en/",
@@ -11,11 +11,11 @@ const urlsToCache = [
   "/lineart-converter/img/cat-64.webp",
   "/lineart-converter/img/castle-64.webp",
   "/lineart-converter/favicon/favicon.svg",
-  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.6.1/dist/umd/index.min.js",
+  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.8.0/dist/umd/index.min.js",
 ];
 
 importScripts(
-  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.6.1/dist/umd/index.min.js",
+  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.8.0/dist/umd/index.min.js",
 );
 
 async function getOpenCVPath() {
