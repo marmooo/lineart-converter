@@ -1,4 +1,4 @@
-const CACHE_NAME = "2025-02-23 20:00";
+const CACHE_NAME = "2025-02-24 00:00";
 const urlsToCache = [
   "/lineart-converter/",
   "/lineart-converter/ja/",
@@ -15,7 +15,7 @@ const urlsToCache = [
 ];
 
 importScripts(
-  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.8.9/dist/umd/index.min.js",
+  "https://cdn.jsdelivr.net/npm/wasm-feature-detect@1.8.0/dist/umd/index.min.js",
 );
 
 async function getOpenCVPath() {
