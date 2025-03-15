@@ -151,7 +151,7 @@ class LoadPanel extends Panel {
   handleImageOnloadEvent = (event) => {
     const img = event.currentTarget;
     filterPanel.setCanvas(img);
-    const filter = filterPanel.filters.adaptiveThreshold;
+    const filter = filterPanel.currentFilter;
     filter.apply(...filter.defaultOptions);
   };
 
@@ -255,6 +255,7 @@ class FilterPanel extends LoadPanel {
     this.panel.querySelector(`.${currClass}`).classList.remove("d-none");
     this.selectedIndex = selectedIndex;
     const filter = this.filters[currClass];
+    this.currentFilter = filter;
     filter.apply(...filter.defaultOptions);
   }
 
@@ -262,6 +263,7 @@ class FilterPanel extends LoadPanel {
     this.filtering = false;
     this.addAdaptiveThresholdEvents(panel);
     this.addDilateThresholdEvents(panel);
+    this.currentFilter = this.filters.adaptiveThreshold;
   }
 
   addInputEvents(filter) {
