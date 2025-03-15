@@ -65,6 +65,34 @@ function loadScript(url) {
   });
 }
 
+function getTransparentBackgroundImage(size, colors) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext("2d");
+  context.fillStyle = colors[0];
+  context.fillRect(0, 0, size / 2, size / 2);
+  context.fillRect(size / 2, size / 2, size / 2, size / 2);
+  context.fillStyle = colors[1];
+  context.fillRect(size / 2, 0, size / 2, size / 2);
+  context.fillRect(0, size / 2, size / 2, size / 2);
+  const url = canvas.toDataURL("image/png");
+  return `url(${url})`;
+}
+
+function setTransparentCSSVariables() {
+  const lightBg = getTransparentBackgroundImage(32, ["#ddd", "#fff"]);
+  const darkBg = getTransparentBackgroundImage(32, ["#333", "#212529"]);
+  document.documentElement.style.setProperty(
+    "--transparent-bg-light",
+    lightBg,
+  );
+  document.documentElement.style.setProperty(
+    "--transparent-bg-dark",
+    darkBg,
+  );
+}
+
 class Panel {
   constructor(panel) {
     this.panel = panel;
@@ -364,7 +392,7 @@ class FilterPanel extends LoadPanel {
       }
       cv.imshow(this.canvas, src);
       src.delete();
-      // this.transparentBackground();
+      this.transparentBackground();
     }
   }
 
@@ -405,19 +433,19 @@ class FilterPanel extends LoadPanel {
       }
       cv.imshow(this.canvas, src);
       src.delete();
-      // this.transparentBackground();
+      this.transparentBackground();
     }
   }
 
-  // transparentBackground() {
-  //   const { width, height } = this.canvas;
-  //   const imageData = this.canvasContext.getImageData(0, 0, width, height);
-  //   const data = imageData.data;
-  //   for (let i = 0; i < data.length; i+= 4) {
-  //     if (data[i] === 255) data[i + 3] = 0;
-  //   }
-  //   this.canvasContext.putImageData(imageData, 0, 0);
-  // }
+  transparentBackground() {
+    const { width, height } = this.canvas;
+    const imageData = this.canvasContext.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i+= 4) {
+      if (data[i] === 255) data[i + 3] = 0;
+    }
+    this.canvasContext.putImageData(imageData, 0, 0);
+  }
 
   setCanvas(canvas) {
     if (canvas.tagName.toLowerCase() === "img") {
@@ -441,6 +469,7 @@ const loadPanel = new LoadPanel(document.getElementById("loadPanel"));
 loadConfig();
 initLangSelect();
 initTooltip();
+setTransparentCSSVariables();
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 globalThis.ondragover = (event) => {
   event.preventDefault();
