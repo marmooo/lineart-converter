@@ -152,7 +152,11 @@ class LoadPanel extends Panel {
     const img = event.currentTarget;
     filterPanel.setCanvas(img);
     const filter = filterPanel.currentFilter;
-    filter.apply(...filter.defaultOptions);
+    filterPanel.canvas.classList.add("loading");
+    setTimeout(() => {
+      filter.apply(...filter.defaultOptions);
+      filterPanel.canvas.classList.remove("loading");
+    }, 0);
   };
 
   loadImage(url) {
