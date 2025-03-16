@@ -252,7 +252,7 @@ class FilterPanel extends LoadPanel {
     panel.querySelector(".download").onclick = () => this.download();
     panel.querySelector(".filterSelect").onchange = (event) =>
       this.filterSelect(event);
-    this.addEvents(panel);
+    this.addFilters(panel);
   }
 
   show() {
@@ -291,7 +291,7 @@ class FilterPanel extends LoadPanel {
     filter.apply();
   }
 
-  addEvents(panel) {
+  addFilters(panel) {
     this.filtering = false;
     this.addAdaptiveThresholdEvents(panel);
     this.addDilateThresholdEvents(panel);
