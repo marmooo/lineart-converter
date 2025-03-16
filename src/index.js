@@ -288,7 +288,11 @@ class FilterPanel extends LoadPanel {
     this.selectedIndex = selectedIndex;
     const filter = this.filters[currClass];
     this.currentFilter = filter;
-    filter.apply();
+    this.canvas.classList.add("loading");
+    setTimeout(() => {
+      filter.apply();
+      this.canvas.classList.remove("loading");
+    }, 0);
   }
 
   addFilters(panel) {
@@ -300,7 +304,13 @@ class FilterPanel extends LoadPanel {
 
   addInputEvents(filter) {
     for (const input of Object.values(filter.inputs)) {
-      input.addEventListener("input", () => filter.apply());
+      input.addEventListener("input", () => {
+        this.canvas.classList.add("loading");
+        setTimeout(() => {
+          this.currentFilter.apply();
+          this.canvas.classList.remove("loading");
+        }, 0);
+      });
     }
     for (const node of filter.root.querySelectorAll("button[title=reset]")) {
       node.onclick = () => {
@@ -428,7 +438,7 @@ class FilterPanel extends LoadPanel {
     const { width, height } = this.canvas;
     const imageData = this.canvasContext.getImageData(0, 0, width, height);
     const data = imageData.data;
-    for (let i = 0; i < data.length; i+= 4) {
+    for (let i = 0; i < data.length; i += 4) {
       if (data[i] === 255) data[i + 3] = 0;
     }
     this.canvasContext.putImageData(imageData, 0, 0);
