@@ -182,7 +182,7 @@ class LoadPanel extends Panel {
     const filter = filterPanel.currentFilter;
     filterPanel.canvas.classList.add("loading");
     setTimeout(() => {
-      filter.apply(...filter.defaultOptions);
+      filter.apply();
       filterPanel.canvas.classList.remove("loading");
     }, 0);
   };
@@ -288,7 +288,7 @@ class FilterPanel extends LoadPanel {
     this.selectedIndex = selectedIndex;
     const filter = this.filters[currClass];
     this.currentFilter = filter;
-    filter.apply(...filter.defaultOptions);
+    filter.apply();
   }
 
   addEvents(panel) {
@@ -315,10 +315,9 @@ class FilterPanel extends LoadPanel {
     const root = panel.querySelector(".adaptiveThreshold");
     this.filters.adaptiveThreshold = {
       root,
-      apply: (blockSize, C, dilateOptions) => {
-        this.adaptiveThreshold(blockSize, C, dilateOptions);
+      apply: () => {
+        this.adaptiveThreshold();
       },
-      defaultOptions: [10, 10, 0],
       inputs: {
         blockSize: root.querySelector(".blockSize"),
         C: root.querySelector(".C"),
@@ -332,10 +331,9 @@ class FilterPanel extends LoadPanel {
     const root = panel.querySelector(".dilateThreshold");
     this.filters.dilateThreshold = {
       root,
-      apply: (threshold, dilateIterations) => {
-        this.dilateThreshold(threshold, dilateIterations);
+      apply: () => {
+        this.dilateThreshold();
       },
-      defaultOptions: [220, 1],
       inputs: {
         threshold: root.querySelector(".threshold"),
         dilateIterations: root.querySelector(".dilateIterations"),
@@ -344,18 +342,12 @@ class FilterPanel extends LoadPanel {
     this.addInputEvents(this.filters.dilateThreshold);
   }
 
-  adaptiveThreshold(blockSize, C, iterations) {
+  adaptiveThreshold() {
     const inputs = this.filters.adaptiveThreshold.inputs;
     const minBlockSize = Number(inputs.blockSize.min);
-    if (blockSize === undefined) {
-      blockSize = Number(inputs.blockSize.value);
-      C = Number(inputs.C.value);
-      iterations = Number(inputs.dilateIterations.value);
-    } else {
-      inputs.blockSize.value = blockSize;
-      inputs.C.value = C;
-      inputs.dilateIterations.value = iterations;
-    }
+    const blockSize = Number(inputs.blockSize.value);
+    const C = Number(inputs.C.value);
+    const iterations = Number(inputs.dilateIterations.value);
     if (blockSize === minBlockSize && iterations === 0) {
       this.canvasContext.drawImage(this.offscreenCanvas, 0, 0);
     } else {
@@ -396,15 +388,10 @@ class FilterPanel extends LoadPanel {
     }
   }
 
-  dilateThreshold(threshold, iterations) {
+  dilateThreshold() {
     const inputs = this.filters.dilateThreshold.inputs;
-    if (threshold === undefined) {
-      threshold = Number(inputs.threshold.value);
-      iterations = Number(inputs.dilateIterations.value);
-    } else {
-      inputs.threshold.value = threshold;
-      inputs.dilateIterations.value = iterations;
-    }
+    const threshold = Number(inputs.threshold.value);
+    const iterations = Number(inputs.dilateIterations.value);
     if (threshold === 255 && iterations === 0) {
       this.canvasContext.drawImage(this.offscreenCanvas, 0, 0);
     } else {
