@@ -1,0 +1,13 @@
+{
+  "core": {
+    "whitelist": {
+      "": ["absdiff", "bitwise_not"],
+      "Algorithm": []
+    }
+  },
+  "imgproc": {
+    "whitelist": {
+      "": ["adaptiveThreshold", "cvtColor", "dilate", "threshold"]
+    }
+  }
+}
