@@ -1,4 +1,4 @@
-import { Tooltip } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/+esm";
+import { Tooltip } from "https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/+esm";
 import imageCompareViewer from "https://cdn.jsdelivr.net/npm/image-compare-viewer@1.6.2/+esm";
 
 function loadConfig() {
