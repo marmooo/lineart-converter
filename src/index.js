@@ -82,7 +82,7 @@ function getTransparentBackgroundImage(size, colors) {
 
 function setTransparentCSSVariables() {
   const lightBg = getTransparentBackgroundImage(32, ["#ddd", "#fff"]);
-  const darkBg = getTransparentBackgroundImage(32, ["#555", "#666"]);
+  const darkBg = getTransparentBackgroundImage(32, ["#666", "#777"]);
   document.documentElement.style.setProperty(
     "--transparent-bg-light",
     lightBg,
@@ -454,7 +454,6 @@ class FilterPanel extends LoadPanel {
     for (let i = 0; i < data.length; i += 4) {
       if (data[i] === 255) data[i + 3] = 0;
     }
-    console.log(data);
     this.canvasContext.putImageData(imageData, 0, 0);
   }
 
