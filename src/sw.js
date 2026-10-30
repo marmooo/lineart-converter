@@ -1,4 +1,4 @@
-const cacheName = "2026-09-22 00:00";
+const cacheName = "2026-10-30 00:00";
 const urlsToCache = [
   "/lineart-converter/index.js",
   "/lineart-converter/img/before.webp",
